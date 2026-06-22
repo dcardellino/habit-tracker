@@ -1,0 +1,79 @@
+{
+  "meta": {
+    "createdAt": "2026-06-22T09:49:20Z",
+    "updatedAt": "2026-06-22T09:49:20Z",
+    "version": "1.1",
+    "plaidVersion": "1.0"
+  },
+  "creator": {
+    "name": "Dominic Cardellino",
+    "expertise": "Senior DevOps Engineer, 8+ Jahre",
+    "background": "In einer bewussten Selbstverbesserungsphase — neue Routinen aufbauen, alte ablegen. Wendet das DevOps-Prinzip 'Was man nicht misst, kann man nicht verbessern' auf sein eigenes Leben an. Baut sich das Monitoring-System für seine eigenen Gewohnheiten."
+  },
+  "purpose": {
+    "whoYouHelp": "Menschen die bewusst Gewohnheiten aufbauen wollen, zunächst Dominic selbst — später andere technikaffine Nutzer die simple, ehrliche Tools bevorzugen",
+    "problemYouSolve": "Habits beginnen, verlieren sich aus dem Blick — keine sofortige Sichtbarkeit ob eine Routine noch läuft oder längst eingeschlafen ist. Man merkt erst Wochen später, dass man aufgehört hat.",
+    "desiredTransformation": "Von unstrukturierten Vorsätzen zu messbaren, sichtbaren Routinen — Dashboard öffnen, in 3 Sekunden wissen was läuft und was nicht. Kein Scrollen, kein Nachdenken.",
+    "whyYou": "DevOps-Denkweise trifft persönliche Entwicklung: Dominic baut seit Jahren Monitoring-Systeme für Infrastruktur. Ritual ist sein Monitoring-System für sich selbst — die gleiche Disziplin, eine andere Domäne."
+  },
+  "product": {
+    "name": "Ritual",
+    "oneLiner": "Ritual gives you instant clarity on which habits are running and which are slipping — in under 3 seconds, every morning.",
+    "howItWorks": "Du öffnest Ritual morgens. Das Dashboard zeigt dir sofort alle Habits mit Streak-Status: grüne Ketten für laufende Routinen, rote Signale für einschlafende. Ein Tap pro Habit zum Abhaken. Abends siehst du deinen Tag auf einen Blick. Wöchentlich gibt es eine ehrliche Auswertung: was hat funktioniert, was nicht.",
+    "keyCapabilities": [
+      "Tägliche Check-ins — Habits als Ja/Nein-Felder, schnell abhaken",
+      "Streak-Visualisierung — sichtbare Streak-Ketten, GitHub-Contribution-Graph-Stil",
+      "Kategorien & Emoji — Habits mit Icons und Kategorien organisieren",
+      "Statistiken & Trends — wöchentliche/monatliche Completion Rates, beste Streaks"
+    ],
+    "platform": "web",
+    "marketDifferentiation": "Unlike gamified apps like Habitica or general tools like Notion, Ritual does exactly one thing: shows you the honest truth about your habits in under 3 seconds. No XP, no quests, no setup overhead — just clean streaks and brutal clarity.",
+    "magicMoment": "Der Nutzer öffnet das Dashboard morgens und sieht in einer View: Laufen 🏃 14 Tage ✓, Lesen 📚 7 Tage ✓, Schreiben ✍️ 3 Tage ✗ — sofortiges Situationsbewusstsein, kein Scrollen, kein Nachdenken. Genau wie ein gutes Monitoring-Dashboard."
+  },
+  "audience": {
+    "primaryUser": "Dominic, 30+ Tech-Professional, der Gewohnheiten aufbauen will aber von komplexen Tools frustriert wird. Denkt in Systemen, schätzt Minimalismus, will Daten nicht erklären müssen.",
+    "secondaryUsers": [
+      "Andere Entwickler und technikaffine Nutzer die simple, ehrliche Tools bevorzugen",
+      "Personen in bewussten Selbstoptimierungsphasen die kein Gamification-Overhead wollen"
+    ],
+    "currentAlternatives": "Streak App, Habitica — gute Idee, aber fehlende Kontrolle, Gamification-Overhead oder schlechtes Design. Notion/Spreadsheets — zu viel Setup, kein echtes Habit-UX. Oder gar nichts tracken und einfach hoffen.",
+    "frustrations": "Fremde Apps ändern sich, verschwinden oder haben Tracking. Gamification lenkt ab statt zu fokussieren. Notion/Spreadsheets sind zu langsam für den täglichen Check-in. Kein Tool hat genau das richtige UX: schnell, ehrlich, clean."
+  },
+  "business": {
+    "revenueModel": "free",
+    "initialGoal": "Funktionierendes persönliches Tool in 4-6 Wochen deployed. Täglich selbst nutzen. Dann als kostenloses öffentliches Tool launchen.",
+    "sixMonthVision": "Ritual ist öffentlich zugänglich, andere können sich registrieren. Kleines aber loyales Nutzerfeld von technikaffinen Selbstoptimierern. Basis für mögliche zukünftige Monetarisierung.",
+    "constraints": "Nebenprojekt mit ein paar Stunden pro Woche. Kein Budget-Druck, kein Deadline-Stress. Soll Spaß machen.",
+    "goToMarket": "Erstmal für sich selbst nutzen und validieren. Dann als Open-Source oder kostenloses Tool in Tech-Communities (Twitter/X, Hacker News, Dev.to) teilen."
+  },
+  "feeling": {
+    "brandPersonality": "Präzise, ehrlich, unaufdringlich. Wie gute Monitoring-Infrastruktur: immer beobachtend, nie nervend. Ein stiller Trainingspartner der Buch führt — ohne Lob, ohne Drama.",
+    "toneOfVoice": "Still & direkt. Keine unnötigen Worte, kein Jubeln, kein Lob. Fakten. Wenn du 3 Habits abgehakt hast, zeigt Ritual das — ohne 'Wow, super gemacht!' Wenn du eine Woche nicht dabei warst, zeigt Ritual das ehrlich — ohne Schuldzuweisungen. Beispiel-Texte: Leerstatus: 'Noch keine Rituale. Fang mit einem an.' Streak unterbrochen: '7-Tage-Streak unterbrochen. Neu starten.' Alles abgehakt: 'Alle Rituale heute abgeschlossen.'"
+  },
+  "techStack": {
+    "appType": "web",
+    "frontend": {
+      "choice": "Next.js (App Router)",
+      "rationale": "Bestes Ökosystem, top Integration mit Convex, hervorragend mit Claude Code. Routing, SSR und API Routes built-in."
+    },
+    "backend": {
+      "choice": "Convex",
+      "rationale": "Echtzeit-Reaktivität, kein Backend-Boilerplate, TypeScript-nativ, built-in Auth und Datenbankintegration. Ideal für Solo-Entwickler."
+    },
+    "database": {
+      "choice": "Convex Database",
+      "rationale": "In Convex integriert, document-relational, automatisches Indexing, ACID-Transaktionen, reaktive Queries für Echtzeit-Updates."
+    },
+    "auth": {
+      "choice": "Convex Auth",
+      "rationale": "Native Integration mit Convex, kein extra Service nötig, Email/Password und Social Login, gratis im Convex-Plan."
+    },
+    "payments": {
+      "choice": "",
+      "rationale": "Keine Zahlungen im MVP — App ist kostenlos. Kann später hinzugefügt werden falls monetarisiert wird."
+    }
+  },
+  "tooling": {
+    "codingAgent": "claude-code"
+  }
+}
