@@ -117,6 +117,33 @@ export const uncomplete = mutation({
 });
 
 /**
+ * getAllDatesForUser — query
+ * Returns all check-in dates grouped by habitId for the authenticated user.
+ * Used for efficient streak calculation without N+1 queries.
+ * Returns: Record<habitId, string[]>
+ */
+export const getAllDatesForUser = query({
+  args: {},
+  handler: async (ctx) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) return {};
+
+    const checkins = await ctx.db
+      .query("checkins")
+      .withIndex("by_user_date", (q) => q.eq("userId", userId))
+      .take(10000);
+
+    const byHabit: Record<string, string[]> = {};
+    for (const checkin of checkins) {
+      const key = checkin.habitId as string;
+      if (!byHabit[key]) byHabit[key] = [];
+      byHabit[key].push(checkin.date);
+    }
+    return byHabit;
+  },
+});
+
+/**
  * getRange — query
  * Returns all check-ins for a habit within a date range.
  * Args: { habitId: Id<"habits">, startDate: string, endDate: string }
