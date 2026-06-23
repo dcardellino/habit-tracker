@@ -60,7 +60,7 @@ export function HabitCard({
             onClick={onToggle}
             aria-label={isCompleted ? "Mark incomplete" : "Mark complete"}
             className={cn(
-              "w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-150",
+              "w-11 h-11 rounded-full flex items-center justify-center transition-colors duration-150",
               isCompleted ? "bg-[#16A34A]" : "bg-[#F1F5F9]"
             )}
           >
