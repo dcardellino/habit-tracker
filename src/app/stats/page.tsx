@@ -11,7 +11,7 @@ export default function StatsPage() {
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const today = formatInTimeZone(new Date(), timezone, "yyyy-MM-dd");
 
-  const stats = useQuery(api.stats.getAll, { timezone, today });
+  const stats = useQuery(api.stats.getAll, { today });
 
   return (
     <div>

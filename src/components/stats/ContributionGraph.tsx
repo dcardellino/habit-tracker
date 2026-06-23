@@ -55,7 +55,7 @@ export function buildCellData(
 const cellColorMap: Record<CellState, string> = {
   completed: "bg-[#16A34A]",
   missed: "bg-[#EBEDF0]",
-  "not-applicable": "bg-[#F1F5F9] opacity-50",
+  "not-applicable": "bg-[#F1F5F9]/50",
 }
 
 function tooltipText(date: string, state: CellState): string {

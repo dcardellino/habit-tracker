@@ -6,7 +6,6 @@ import { calculateStreak } from "./streaksHelper";
 
 export const getAll = query({
   args: {
-    timezone: v.string(),
     today: v.string(), // YYYY-MM-DD in user's local timezone
   },
   returns: v.array(
@@ -36,7 +35,7 @@ export const getAll = query({
       )
       .take(100);
 
-    const startDate90 = format(subDays(parseISO(args.today), 89), "yyyy-MM-dd");
+    const startDate90 = format(subDays(parseISO(args.today), 90), "yyyy-MM-dd");
     const startDate7 = format(subDays(parseISO(args.today), 6), "yyyy-MM-dd");
     const startDate30 = format(subDays(parseISO(args.today), 29), "yyyy-MM-dd");
 
