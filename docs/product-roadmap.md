@@ -97,47 +97,47 @@
 
 ---
 
-- [ ] **TASK-013** — Implement habit Convex queries and mutations
+- [x] **TASK-013** — Implement habit Convex queries and mutations
   Files: `convex/habits.ts`
   Notes: Implement all habit API functions from `docs/prd.md § API Specification — Habits API`: `habits.listActive`, `habits.create`, `habits.update`, `habits.archive`, `habits.remove`. Every function must call `ctx.auth.getUserIdentity()` and throw if unauthenticated. `habits.remove` must delete all associated checkins. Verify: Test each mutation in the Convex dashboard function runner with a test user.
 
-- [ ] **TASK-014** — Implement check-in Convex queries and mutations
+- [x] **TASK-014** — Implement check-in Convex queries and mutations
   Files: `convex/checkins.ts`
   Notes: Implement all check-in API functions from `docs/prd.md § API Specification — Check-ins API`: `checkins.getTodayStatus`, `checkins.complete`, `checkins.uncomplete`, `checkins.getRange`. `checkins.complete` must be idempotent — check if check-in already exists before inserting. `checkins.uncomplete` only removes check-ins with today's local date. Verify: Create a check-in via function runner. Call `getTodayStatus` — returns the check-in. Call `complete` again — no duplicate created.
 
-- [ ] **TASK-015** — Implement streak calculation utility
+- [x] **TASK-015** — Implement streak calculation utility
   Files: `src/lib/streaks.ts`
   Notes: Pure TypeScript function: `calculateStreak(checkinDates: string[], today: string, userTimezone: string): { currentStreak: number, bestStreak: number }`. Takes sorted array of "YYYY-MM-DD" date strings, today's date string (in user timezone), and timezone. Streak = consecutive days ending on today or yesterday (if today has no check-in yet). Use `date-fns` and `date-fns-tz` for all date math. Write unit tests inline or in `src/lib/streaks.test.ts` covering: active streak, broken streak, no check-ins, streak reset at midnight, check-ins before habit was created. Verify: All unit tests pass.
 
-- [ ] **TASK-016** — Build HabitCard component
+- [x] **TASK-016** — Build HabitCard component
   Files: `src/components/habits/HabitCard.tsx`
   Notes: Display per `docs/prd.md § UI/UX Requirements — HabitCard`. Props: `habit` (name, emoji), `streak` (currentStreak), `isCompleted` (today), `onToggle`, `onEdit`, `onDelete`. Show: emoji (large), name, streak count with an icon, completion checkbox/button. Completed state: visually distinct per `docs/design.md` tokens (do not invent colors). ⋯ menu opens dropdown with Edit/Delete. Verify: Render `HabitCard` in a test page with mock data — completed and uncompleted states look correct. Responsive on mobile.
 
-- [ ] **TASK-017** — Build emoji picker component
+- [x] **TASK-017** — Build emoji picker component
   Files: `src/components/habits/EmojiPicker.tsx`
   Notes: Wrap `emoji-mart` Picker component. Controlled — accepts `value` (current emoji string) and `onChange` callback. Renders as a popover triggered by clicking the emoji display area. On emoji selection: calls `onChange` with the single emoji character and closes the picker. Verify: Can open picker, select emoji, picker closes, selected emoji shows in parent.
 
-- [ ] **TASK-018** — Build Add/Edit Habit modal
+- [x] **TASK-018** — Build Add/Edit Habit modal
   Files: `src/components/habits/AddHabitModal.tsx`
   Notes: Per `docs/prd.md § UI/UX Requirements — Add/Edit Habit Modal`. Props: `open`, `onClose`, `habit?` (if editing). Form: name input (required, max 100 chars), EmojiPicker (required), category dropdown (optional — use CATEGORY_OPTIONS from `src/lib/constants.ts`: "fitness", "learning", "mindfulness", "nutrition", "sleep", "other"). On save: call `useMutation(api.habits.create)` or `useMutation(api.habits.update)`. On success: close modal. Show spinner on save button while pending. Inline validation error if name empty. Verify: Open modal, fill form, save → habit visible on dashboard. Open edit → pre-filled. Cancel → no changes.
 
-- [ ] **TASK-019** — Build habit list and dashboard page
+- [x] **TASK-019** — Build habit list and dashboard page
   Files: `src/components/habits/HabitList.tsx`, `src/app/dashboard/page.tsx`
   Notes: `HabitList` renders a list of `HabitCard` components. Dashboard page wires: `useQuery(api.habits.listActive)` for habits, `useQuery(api.checkins.getTodayStatus, { date: todayLocal })` for completion status, `calculateStreak` for streak counts. Today's date: use `format(new Date(), 'yyyy-MM-dd', { timeZone: userTimezone })`. "Add habit" button opens `AddHabitModal`. Empty state: "No habits yet. Add your first one." with add button. Loading state: 3 skeleton cards. Verify: Add 3 habits — all appear on dashboard. Check one in — completion indicator updates immediately. Streak shows correctly.
 
-- [ ] **TASK-020** — Wire up edit and delete actions on habit cards
+- [x] **TASK-020** — Wire up edit and delete actions on habit cards
   Files: `src/components/habits/HabitCard.tsx`, `src/app/dashboard/page.tsx`
   Notes: Edit action: open `AddHabitModal` pre-filled with habit data. Delete action: show a confirmation `Dialog` from shadcn/ui ("Delete habit and all its history?") before calling `useMutation(api.habits.remove)`. After delete: habit disappears from dashboard (reactive query). Verify: Edit habit name → updates on dashboard. Delete with confirmation → habit removed. Cancel delete → nothing changes.
 
-- [ ] **TASK-021** — Wire up check-in toggle with undo support
+- [x] **TASK-021** — Wire up check-in toggle with undo support
   Files: `src/app/dashboard/page.tsx`, `src/components/habits/HabitCard.tsx`
   Notes: Tapping an uncompleted habit calls `checkins.complete`. Tapping a completed habit opens a small confirmation (inline or dialog): "Undo today's check-in?" — on confirm, calls `checkins.uncomplete`. Use optimistic updates via Convex `useMutation` for immediate visual feedback. Show error toast if mutation fails (use the `Toaster` from shadcn/ui). Verify: Check in, then undo — streak updates correctly both ways. Trigger network error — optimistic UI reverts.
 
-- [ ] **TASK-022** — Validate streak display across timezone edge cases
+- [x] **TASK-022** — Validate streak display across timezone edge cases
   Files: `src/lib/streaks.ts`, `src/app/dashboard/page.tsx`
   Notes: Manually test: set system clock to 11:59pm, check in, advance past midnight — streak should still be active (yesterday counts). Test with habits that have gaps. Test habit created today with check-in today = streak 1. Fix any edge cases found. Add test cases to `streaks.test.ts`. Verify: All timezone edge cases in `docs/prd.md § Edge Cases — Streak Calculation` pass.
 
-- [ ] **TASK-023** — Test full core loop on mobile web
+- [x] **TASK-023** — Test full core loop on mobile web
   Files: (no code changes unless mobile issues found)
   Notes: Open the app on iPhone Safari and Android Chrome. Test the full loop: sign up → add habit → check in → see streak. Test at various screen widths (375px, 390px, 414px). Fix any layout issues — dashboard must be fully usable one-handed on a phone. Verify: Complete the full core loop on mobile in under 30 seconds.
 
