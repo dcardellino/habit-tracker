@@ -106,4 +106,52 @@ describe("calculateStreak", () => {
       bestStreak: 5,
     });
   });
+
+  // Case 10: Check-in today after missing yesterday resets streak but preserves best
+  it("check-in today after missing yesterday starts new streak of 1", () => {
+    // 5-day run: Jan 1-5, gap through Jan 9, then checked in Jan 10 (today)
+    const dates = [
+      "2024-01-01",
+      "2024-01-02",
+      "2024-01-03",
+      "2024-01-04",
+      "2024-01-05",
+      "2024-01-10",
+    ];
+    const result = calculateStreak(dates, "2024-01-10");
+    expect(result.currentStreak).toBe(1);
+    expect(result.bestStreak).toBe(5);
+  });
+
+  // Case 11: Consecutive streak ending exactly on yesterday (today not checked in) still active
+  it("streak ending on yesterday still counts as active", () => {
+    const dates = ["2024-01-08", "2024-01-09"];
+    const result = calculateStreak(dates, "2024-01-10");
+    expect(result.currentStreak).toBe(2);
+    expect(result.bestStreak).toBe(2);
+  });
+
+  // Case 12: Long streak of 30 consecutive days ending today
+  it("handles a long streak of 30 days ending today", () => {
+    const today = "2024-02-01";
+    const dates: string[] = [];
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date("2024-02-01");
+      d.setUTCDate(d.getUTCDate() - i);
+      dates.push(d.toISOString().slice(0, 10));
+    }
+    const result = calculateStreak(dates, today);
+    expect(result.currentStreak).toBe(30);
+    expect(result.bestStreak).toBe(30);
+  });
+
+  // Case 13: Streak broken 2 days ago (yesterday also missed) — currentStreak = 0
+  it("streak broken 2 days ago with yesterday also missed returns currentStreak=0", () => {
+    // 4-day run: Mar 10-13, then both Mar 14 and Mar 15 (today) are missing
+    const dates = ["2024-03-10", "2024-03-11", "2024-03-12", "2024-03-13"];
+    expect(calculateStreak(dates, TODAY)).toEqual({
+      currentStreak: 0,
+      bestStreak: 4,
+    });
+  });
 });
