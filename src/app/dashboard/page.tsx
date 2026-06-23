@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery, useMutation, useConvexAuth } from "convex/react";
 import { api } from "convex/_generated/api";
 import { format } from "date-fns";
 import { calculateStreak } from "@/lib/streaks";
@@ -20,6 +20,7 @@ import {
 
 export default function DashboardPage() {
   const today = format(new Date(), "yyyy-MM-dd");
+  const { isAuthenticated } = useConvexAuth();
 
   // Convex queries
   const habits = useQuery(api.habits.listActive);
@@ -43,11 +44,12 @@ export default function DashboardPage() {
 
   // Capture timezone on first sign-in (kept from Phase 0)
   useEffect(() => {
+    if (!isAuthenticated) return;
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     setTimezone({ timezone }).catch(() => {
       // Timezone capture is best-effort — ignore errors
     });
-  }, [setTimezone]);
+  }, [isAuthenticated, setTimezone]);
 
   // Loading state: show 3 skeleton cards
   const isLoading =
