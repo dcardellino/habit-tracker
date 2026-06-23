@@ -50,6 +50,12 @@ export const complete = mutation({
       throw new Error("Not authenticated");
     }
 
+    // Verify the habit exists and belongs to this user
+    const habit = await ctx.db.get(args.habitId);
+    if (!habit || habit.userId !== userId) {
+      throw new Error("Habit not found");
+    }
+
     // Check if a check-in already exists for this habit+date
     const existing = await ctx.db
       .query("checkins")
