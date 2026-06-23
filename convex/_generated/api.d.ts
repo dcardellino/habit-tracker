@@ -12,6 +12,8 @@ import type * as auth from "../auth.js";
 import type * as checkins from "../checkins.js";
 import type * as habits from "../habits.js";
 import type * as http from "../http.js";
+import type * as stats from "../stats.js";
+import type * as streaksHelper from "../streaksHelper.js";
 import type * as users from "../users.js";
 
 import type {
@@ -25,6 +27,8 @@ declare const fullApi: ApiFromModules<{
   checkins: typeof checkins;
   habits: typeof habits;
   http: typeof http;
+  stats: typeof stats;
+  streaksHelper: typeof streaksHelper;
   users: typeof users;
 }>;
 
