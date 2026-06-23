@@ -159,14 +159,15 @@ export default function DashboardPage() {
             This will delete &ldquo;{confirmDeleteHabit?.name}&rdquo; and all
             its history. This cannot be undone.
           </p>
-          <div className="flex gap-2 justify-end mt-4">
+          <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 mt-4">
             <Button
               variant="ghost"
+              className="w-full sm:w-auto"
               onClick={() => setConfirmDeleteHabit(null)}
             >
               Cancel
             </Button>
-            <Button variant="destructive" onClick={handleConfirmDelete}>
+            <Button variant="destructive" className="w-full sm:w-auto" onClick={handleConfirmDelete}>
               Delete
             </Button>
           </div>
@@ -187,11 +188,11 @@ export default function DashboardPage() {
           <p className="text-sm text-[#64748B]">
             Remove today&apos;s check-in for this habit?
           </p>
-          <div className="flex gap-2 justify-end mt-4">
-            <Button variant="ghost" onClick={() => setUndoHabitId(null)}>
+          <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 mt-4">
+            <Button variant="ghost" className="w-full sm:w-auto" onClick={() => setUndoHabitId(null)}>
               Cancel
             </Button>
-            <Button onClick={handleConfirmUndo}>Remove check-in</Button>
+            <Button className="w-full sm:w-auto" onClick={handleConfirmUndo}>Remove check-in</Button>
           </div>
         </DialogContent>
       </Dialog>

@@ -71,7 +71,7 @@ export function HabitCard({
           <DropdownMenu>
             <DropdownMenuTrigger
               aria-label="Habit options"
-              className="flex items-center justify-center w-8 h-8 rounded-md text-[#64748B] hover:bg-[#F1F5F9] hover:text-[#0F172A] transition-colors duration-150"
+              className="flex items-center justify-center w-11 h-11 rounded-md text-[#64748B] hover:bg-[#F1F5F9] hover:text-[#0F172A] transition-colors duration-150"
             >
               <MoreHorizontal size={18} />
             </DropdownMenuTrigger>

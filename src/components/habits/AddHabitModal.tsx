@@ -132,14 +132,14 @@ export function AddHabitModal({ open, onClose, habit }: AddHabitModalProps) {
           )}
 
           {/* Action buttons */}
-          <div className="flex justify-end gap-2 mt-2">
-            <Button variant="ghost" onClick={onClose} disabled={saving}>
+          <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 mt-2">
+            <Button variant="ghost" onClick={onClose} disabled={saving} className="w-full sm:w-auto">
               Cancel
             </Button>
             <Button
               onClick={handleSubmit}
               disabled={saving}
-              className="bg-[#6366F1] text-white rounded-lg px-4 py-2 text-sm font-medium"
+              className="w-full sm:w-auto bg-[#6366F1] text-white rounded-lg px-4 py-2 text-sm font-medium"
             >
               {saving && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
