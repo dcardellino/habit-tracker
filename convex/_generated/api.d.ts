@@ -9,6 +9,8 @@
  */
 
 import type * as auth from "../auth.js";
+import type * as checkins from "../checkins.js";
+import type * as habits from "../habits.js";
 import type * as http from "../http.js";
 import type * as users from "../users.js";
 
@@ -20,6 +22,8 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
+  checkins: typeof checkins;
+  habits: typeof habits;
   http: typeof http;
   users: typeof users;
 }>;
