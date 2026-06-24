@@ -8,7 +8,7 @@ import { Plus } from "lucide-react";
 interface HabitListProps {
   habits: Doc<"habits">[];
   todayStatus: Record<string, true>;
-  streaks: Record<string, { currentStreak: number; bestStreak: number }>;
+  allCheckinDates: Record<string, string[]>;
   onToggle: (habitId: Id<"habits">) => void;
   onEdit: (habit: Doc<"habits">) => void;
   onDelete: (habit: Doc<"habits">) => void;
@@ -18,7 +18,7 @@ interface HabitListProps {
 export function HabitList({
   habits,
   todayStatus,
-  streaks,
+  allCheckinDates,
   onToggle,
   onEdit,
   onDelete,
@@ -27,7 +27,7 @@ export function HabitList({
   if (habits.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center gap-4 py-16 text-center">
-        <p className="text-[#64748B] text-sm">
+        <p className="text-[#8E8E93] text-sm">
           No habits yet. Add your first one.
         </p>
         <Button size="sm" onClick={onAddHabit}>
@@ -41,15 +41,11 @@ export function HabitList({
     <div className="space-y-2">
       {habits.map((habit) => {
         const habitIdStr = habit._id as string;
-        const streakData = streaks[habitIdStr] ?? {
-          currentStreak: 0,
-          bestStreak: 0,
-        };
         return (
           <HabitCard
             key={habit._id}
             habit={habit}
-            streak={streakData.currentStreak}
+            checkinDates={allCheckinDates[habitIdStr] ?? []}
             isCompleted={!!todayStatus[habitIdStr]}
             onToggle={() => onToggle(habit._id)}
             onEdit={() => onEdit(habit)}
