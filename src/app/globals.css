@@ -7,24 +7,20 @@
 
 @theme {
   /* Colors */
-  --color-background: #F8FAFC;
-  --color-surface: #FFFFFF;
-  --color-border: #E2E8F0;
-  --color-primary: #0F172A;
+  --color-background: #0A0A0A;
+  --color-surface: #1C1C1E;
+  --color-border: #2C2C2E;
+  --color-primary: #FFFFFF;
   --color-on-primary: #FFFFFF;
-  --color-secondary: #475569;
-  --color-muted: #94A3B8;
+  --color-secondary: #8E8E93;
+  --color-muted: #636366;
   --color-accent: #6366F1;
   --color-on-accent: #FFFFFF;
   --color-success: #16A34A;
   --color-on-success: #FFFFFF;
   --color-warning: #D97706;
   --color-error: #DC2626;
-  --color-contribution-0: #F1F5F9;
-  --color-contribution-1: #BBF7D0;
-  --color-contribution-2: #86EFAC;
-  --color-contribution-3: #4ADE80;
-  --color-contribution-4: #16A34A;
+  --color-contribution-empty: #3A3A3C;
 
   /* Typography — font families */
   --font-sans: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -194,24 +190,20 @@ body {
 
 /* Restore custom Ritual design tokens — must come after @theme inline to take precedence */
 @theme {
-  --color-background: #F8FAFC;
-  --color-surface: #FFFFFF;
-  --color-border: #E2E8F0;
-  --color-primary: #0F172A;
+  --color-background: #0A0A0A;
+  --color-surface: #1C1C1E;
+  --color-border: #2C2C2E;
+  --color-primary: #FFFFFF;
   --color-on-primary: #FFFFFF;
-  --color-secondary: #475569;
-  --color-muted: #94A3B8;
+  --color-secondary: #8E8E93;
+  --color-muted: #636366;
   --color-accent: #6366F1;
   --color-on-accent: #FFFFFF;
   --color-success: #16A34A;
   --color-on-success: #FFFFFF;
   --color-warning: #D97706;
   --color-error: #DC2626;
-  --color-contribution-0: #F1F5F9;
-  --color-contribution-1: #BBF7D0;
-  --color-contribution-2: #86EFAC;
-  --color-contribution-3: #4ADE80;
-  --color-contribution-4: #16A34A;
+  --color-contribution-empty: #3A3A3C;
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
