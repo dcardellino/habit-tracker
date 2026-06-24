@@ -4,13 +4,12 @@ import { useState, useEffect } from "react";
 import { useQuery, useMutation, useConvexAuth } from "convex/react";
 import { api } from "convex/_generated/api";
 import { format } from "date-fns";
-import { calculateStreak } from "@/lib/streaks";
 import { HabitList } from "@/components/habits/HabitList";
 import { AddHabitModal } from "@/components/habits/AddHabitModal";
 import { Doc, Id } from "convex/_generated/dataModel";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -57,17 +56,6 @@ export default function DashboardPage() {
     todayStatus === undefined ||
     allCheckinDates === undefined;
 
-  // Compute streaks per habit from full check-in history
-  const streaks: Record<string, { currentStreak: number; bestStreak: number }> =
-    {};
-  if (habits && allCheckinDates) {
-    for (const habit of habits) {
-      const habitIdStr = habit._id as string;
-      const dates = allCheckinDates[habitIdStr] ?? [];
-      streaks[habitIdStr] = calculateStreak(dates, today);
-    }
-  }
-
   // TASK-021: toggle check-in
   const handleToggle = async (habitId: Id<"habits">) => {
     const isCompleted = todayStatus?.[habitId as string];
@@ -106,26 +94,30 @@ export default function DashboardPage() {
 
   return (
     <div>
-      {/* Header row */}
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-xl font-semibold text-[#0F172A]">Today</h1>
-        <Button onClick={() => setAddModalOpen(true)} size="sm">
-          <Plus size={16} className="mr-1" /> Add habit
-        </Button>
+      {/* Streak-style header */}
+      <div className="flex items-start justify-between mb-6">
+        <h1 className="text-[34px] font-bold text-white leading-tight">Habits</h1>
+        <button
+          onClick={() => setAddModalOpen(true)}
+          className="flex items-center gap-1.5 bg-[#1C1C1E] border border-[#2C2C2E] rounded-full px-3 py-2 text-white text-sm font-medium shrink-0"
+        >
+          <Plus size={16} />
+          Hinzufügen
+        </button>
       </div>
 
       {/* Loading skeleton */}
       {isLoading ? (
         <div className="space-y-2">
           {[1, 2, 3].map((i) => (
-            <Skeleton key={i} className="h-16 w-full rounded-xl" />
+            <Skeleton key={i} className="h-40 w-full rounded-2xl bg-[#1C1C1E]" />
           ))}
         </div>
       ) : (
         <HabitList
           habits={habits}
           todayStatus={todayStatus ?? {}}
-          streaks={streaks}
+          allCheckinDates={allCheckinDates ?? {}}
           onToggle={handleToggle}
           onEdit={(habit) => setEditingHabit(habit)}
           onDelete={(habit) => setConfirmDeleteHabit(habit)}
@@ -157,7 +149,7 @@ export default function DashboardPage() {
           <DialogHeader>
             <DialogTitle>Delete habit?</DialogTitle>
           </DialogHeader>
-          <p className="text-sm text-[#64748B]">
+          <p className="text-sm text-[#8E8E93]">
             This will delete &ldquo;{confirmDeleteHabit?.name}&rdquo; and all
             its history. This cannot be undone.
           </p>
@@ -187,7 +179,7 @@ export default function DashboardPage() {
           <DialogHeader>
             <DialogTitle>Undo check-in?</DialogTitle>
           </DialogHeader>
-          <p className="text-sm text-[#64748B]">
+          <p className="text-sm text-[#8E8E93]">
             Remove today&apos;s check-in for this habit?
           </p>
           <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 mt-4">
