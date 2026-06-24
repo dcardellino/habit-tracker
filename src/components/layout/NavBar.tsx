@@ -2,25 +2,26 @@
 
 import Link from "next/link";
 import { useAuthActions } from "@convex-dev/auth/react";
-import { Settings, BarChart2 } from "lucide-react";
+import { LayoutGrid, BarChart2 } from "lucide-react";
 
 export function NavBar() {
   const { signOut } = useAuthActions();
 
   return (
     <header className="flex items-center justify-between px-4 py-3">
-      {/* Left pill: Settings + Stats navigation */}
+      {/* Left pill: Dashboard + Stats navigation */}
       <div className="flex items-center gap-1 bg-[#1C1C1E] border border-[#2C2C2E] rounded-full px-3 py-2">
-        <span
-          aria-label="Settings"
-          className="flex items-center justify-center text-[#636366] cursor-default"
+        <Link
+          href="/dashboard"
+          aria-label="Dashboard"
+          className="flex items-center justify-center text-white"
         >
-          <Settings size={18} />
-        </span>
+          <LayoutGrid size={18} />
+        </Link>
         <div className="w-px h-4 bg-[#2C2C2E] mx-1" />
         <Link
           href="/stats"
-          aria-label="Statistics"
+          aria-label="Statistiken"
           className="flex items-center justify-center text-white"
         >
           <BarChart2 size={18} />
