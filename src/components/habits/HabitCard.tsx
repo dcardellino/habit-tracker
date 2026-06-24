@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, MoreHorizontal } from "lucide-react";
+import { Check, Settings } from "lucide-react";
 import { type Id } from "../../../convex/_generated/dataModel";
 import {
   DropdownMenu,
@@ -53,14 +53,14 @@ export function HabitCard({
           <DropdownMenu>
             <DropdownMenuTrigger
               aria-label="Habit options"
-              className="flex items-center justify-center w-7 h-7 rounded-md text-[#636366] hover:text-white transition-colors shrink-0"
+              className="flex items-center justify-center w-7 h-7 rounded-full bg-[#2C2C2E] text-[#8E8E93] hover:text-white transition-colors shrink-0"
             >
-              <MoreHorizontal size={16} />
+              <Settings size={14} />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={onEdit}>Edit</DropdownMenuItem>
+              <DropdownMenuItem onClick={onEdit}>Bearbeiten</DropdownMenuItem>
               <DropdownMenuItem variant="destructive" onClick={onDelete}>
-                Delete
+                Löschen
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
