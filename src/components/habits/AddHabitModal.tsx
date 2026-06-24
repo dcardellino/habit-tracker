@@ -17,6 +17,17 @@ import { Input } from "@/components/ui/input";
 import { EmojiPicker } from "./EmojiPicker";
 import { CATEGORY_OPTIONS } from "@/lib/constants";
 
+const HABIT_COLORS = [
+  "#3B82F6", // blue
+  "#22C55E", // green
+  "#F97316", // orange
+  "#EF4444", // red
+  "#A855F7", // purple
+  "#EC4899", // pink
+  "#EAB308", // yellow
+  "#06B6D4", // cyan
+];
+
 interface AddHabitModalProps {
   open: boolean;
   onClose: () => void;
@@ -27,6 +38,7 @@ export function AddHabitModal({ open, onClose, habit }: AddHabitModalProps) {
   const [name, setName] = useState(habit?.name ?? "");
   const [emoji, setEmoji] = useState(habit?.emoji ?? "✨");
   const [category, setCategory] = useState(habit?.category ?? "");
+  const [color, setColor] = useState(habit?.color ?? "#3B82F6");
   const [nameError, setNameError] = useState("");
   const [saveError, setSaveError] = useState("");
   const [saving, setSaving] = useState(false);
@@ -39,6 +51,7 @@ export function AddHabitModal({ open, onClose, habit }: AddHabitModalProps) {
       setName(habit?.name ?? "");
       setEmoji(habit?.emoji ?? "✨");
       setCategory(habit?.category ?? "");
+      setColor(habit?.color ?? "#3B82F6");
       setNameError("");
       setSaveError("");
     }
@@ -59,12 +72,14 @@ export function AddHabitModal({ open, onClose, habit }: AddHabitModalProps) {
           name: name.trim(),
           emoji,
           category: category || undefined,
+          color,
         });
       } else {
         await createHabit({
           name: name.trim(),
           emoji,
           category: category || undefined,
+          color,
         });
       }
       onClose();
@@ -85,7 +100,7 @@ export function AddHabitModal({ open, onClose, habit }: AddHabitModalProps) {
         <div className="flex flex-col gap-4 mt-2">
           {/* Habit name */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-[#0F172A]">
+            <label className="text-sm font-medium text-white">
               Habit name
             </label>
             <Input
@@ -94,7 +109,7 @@ export function AddHabitModal({ open, onClose, habit }: AddHabitModalProps) {
               maxLength={100}
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full border border-[#E2E8F0] rounded-lg px-3 py-2 text-[#0F172A] text-sm focus:outline-none focus:ring-2 focus:ring-[#6366F1]"
+              className="w-full border border-[#2C2C2E] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#6366F1]"
             />
             {nameError && (
               <p className="text-xs text-red-500">{nameError}</p>
@@ -103,19 +118,42 @@ export function AddHabitModal({ open, onClose, habit }: AddHabitModalProps) {
 
           {/* Emoji picker */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-[#0F172A]">Emoji</label>
+            <label className="text-sm font-medium text-white">Emoji</label>
             <EmojiPicker value={emoji} onChange={setEmoji} />
+          </div>
+
+          {/* Color */}
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium text-white">Farbe</label>
+            <div className="flex gap-2 flex-wrap">
+              {HABIT_COLORS.map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => setColor(c)}
+                  className="w-7 h-7 rounded-full flex items-center justify-center"
+                  style={{ backgroundColor: c }}
+                  aria-label={`Select color ${c}`}
+                >
+                  {color === c && (
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                      <path d="M2 6l3 3 5-5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  )}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Category */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-[#0F172A]">
+            <label className="text-sm font-medium text-white">
               Category
             </label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full border border-[#E2E8F0] rounded-lg px-3 py-2 text-sm text-[#0F172A] bg-white focus:outline-none focus:ring-2 focus:ring-[#6366F1]"
+              className="w-full border border-[#2C2C2E] rounded-lg px-3 py-2 text-sm text-white bg-[#1C1C1E] focus:outline-none focus:ring-2 focus:ring-[#6366F1]"
             >
               <option value="">No category</option>
               {CATEGORY_OPTIONS.map((cat) => (
