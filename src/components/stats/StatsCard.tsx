@@ -44,21 +44,21 @@ export function StatsCard({
       <CardContent>
         <div className="grid grid-cols-4 gap-4 mb-4">
           <div>
-            <div className="font-mono text-2xl font-bold text-foreground">{currentStreak}</div>
+            <div className="font-mono text-2xl font-bold text-white">{currentStreak}</div>
             <div className="text-xs text-muted-foreground">current streak</div>
           </div>
           <div>
-            <div className="font-mono text-2xl font-bold text-foreground">{bestStreak}</div>
+            <div className="font-mono text-2xl font-bold text-white">{bestStreak}</div>
             <div className="text-xs text-muted-foreground">best streak</div>
           </div>
           <div>
-            <div className="font-mono text-2xl font-bold text-foreground">
+            <div className="font-mono text-2xl font-bold text-white">
               {formatRate(completionRate7d, totalCheckins)}
             </div>
             <div className="text-xs text-muted-foreground">7-day</div>
           </div>
           <div>
-            <div className="font-mono text-2xl font-bold text-foreground">
+            <div className="font-mono text-2xl font-bold text-white">
               {formatRate(completionRate30d, totalCheckins)}
             </div>
             <div className="text-xs text-muted-foreground">30-day</div>
