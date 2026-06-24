@@ -34,7 +34,7 @@ export function StatsCard({
   userTimezone,
 }: StatsCardProps) {
   return (
-    <Card>
+    <Card className="bg-[#1C1C1E] border-[#2C2C2E] text-white">
       <CardHeader>
         <div className="flex items-center gap-2">
           <span className="text-2xl">{habitEmoji}</span>

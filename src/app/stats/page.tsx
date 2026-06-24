@@ -15,13 +15,13 @@ export default function StatsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-[#0F172A] mb-6">Stats</h1>
+      <h1 className="text-2xl font-bold text-white mb-6">Statistiken</h1>
 
       {stats === undefined ? (
         <div className="space-y-4">
-          <Skeleton className="h-64 w-full rounded-xl" />
-          <Skeleton className="h-64 w-full rounded-xl" />
-          <Skeleton className="h-64 w-full rounded-xl" />
+          <Skeleton className="h-64 w-full rounded-xl bg-[#1C1C1E]" />
+          <Skeleton className="h-64 w-full rounded-xl bg-[#1C1C1E]" />
+          <Skeleton className="h-64 w-full rounded-xl bg-[#1C1C1E]" />
         </div>
       ) : stats.length === 0 ? (
         <div className="text-center py-12 text-muted-foreground">

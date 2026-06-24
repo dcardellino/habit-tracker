@@ -92,7 +92,7 @@ export default function SignUpPage() {
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? "Creating account..." : "Sign up"}
           </Button>
-          <p className="text-sm text-[#475569] text-center">
+          <p className="text-sm text-[#8E8E93] text-center">
             Already have an account?{" "}
             <Link href="/signin" className="text-[#6366F1] hover:underline">
               Sign in
