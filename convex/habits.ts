@@ -33,6 +33,7 @@ export const create = mutation({
   args: {
     name: v.string(),
     emoji: v.string(),
+    color: v.optional(v.string()),
     category: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
@@ -45,6 +46,7 @@ export const create = mutation({
       userId,
       name: args.name,
       emoji: args.emoji,
+      color: args.color,
       category: args.category,
       isActive: true,
       createdAt: Date.now(),
@@ -56,7 +58,7 @@ export const create = mutation({
 
 /**
  * update — mutation
- * Updates an existing habit (name, emoji, category).
+ * Updates an existing habit (name, emoji, color, category).
  * Verifies ownership before updating.
  */
 export const update = mutation({
@@ -64,6 +66,7 @@ export const update = mutation({
     id: v.id("habits"),
     name: v.string(),
     emoji: v.string(),
+    color: v.optional(v.string()),
     category: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
@@ -83,6 +86,7 @@ export const update = mutation({
     await ctx.db.patch(args.id, {
       name: args.name,
       emoji: args.emoji,
+      color: args.color,
       category: args.category,
     });
   },
