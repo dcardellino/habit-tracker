@@ -2,12 +2,6 @@
 
 import { Check, Settings } from "lucide-react";
 import { type Id } from "../../../convex/_generated/dataModel";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { HabitMiniGrid } from "./HabitMiniGrid";
 
 const DEFAULT_COLOR = "#3B82F6";
@@ -24,7 +18,6 @@ interface HabitCardProps {
   checkinDates: string[];
   onToggle: () => void;
   onEdit: () => void;
-  onDelete: () => void;
 }
 
 export function HabitCard({
@@ -33,7 +26,6 @@ export function HabitCard({
   checkinDates,
   onToggle,
   onEdit,
-  onDelete,
 }: HabitCardProps) {
   const color = habit.color ?? DEFAULT_COLOR;
 
@@ -59,20 +51,14 @@ export function HabitCard({
 
       {/* Right section: settings pill + check-in pill */}
       <div className="flex gap-2 shrink-0">
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            aria-label="Habit options"
-            className="w-14 rounded-2xl bg-[#2C2C2E] flex items-center justify-center text-[#8E8E93] hover:text-white transition-colors"
-          >
-            <Settings size={18} />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={onEdit}>Bearbeiten</DropdownMenuItem>
-            <DropdownMenuItem variant="destructive" onClick={onDelete}>
-              Löschen
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <button
+          type="button"
+          onClick={onEdit}
+          aria-label="Habit bearbeiten"
+          className="w-14 rounded-2xl bg-[#2C2C2E] flex items-center justify-center text-[#8E8E93] hover:text-white transition-colors"
+        >
+          <Settings size={18} />
+        </button>
 
         <button
           type="button"

@@ -2,7 +2,6 @@
 
 import { Doc, Id } from "convex/_generated/dataModel";
 import { HabitCard } from "./HabitCard";
-import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 
 interface HabitListProps {
@@ -11,7 +10,6 @@ interface HabitListProps {
   allCheckinDates: Record<string, string[]>;
   onToggle: (habitId: Id<"habits">) => void;
   onEdit: (habit: Doc<"habits">) => void;
-  onDelete: (habit: Doc<"habits">) => void;
   onAddHabit: () => void;
 }
 
@@ -21,18 +19,21 @@ export function HabitList({
   allCheckinDates,
   onToggle,
   onEdit,
-  onDelete,
   onAddHabit,
 }: HabitListProps) {
   if (habits.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center gap-4 py-16 text-center">
         <p className="text-[#8E8E93] text-sm">
-          No habits yet. Add your first one.
+          Noch keine Habits. Füge deinen ersten hinzu.
         </p>
-        <Button size="sm" onClick={onAddHabit}>
-          <Plus size={16} className="mr-1" /> Add habit
-        </Button>
+        <button
+          onClick={onAddHabit}
+          className="flex items-center gap-1.5 bg-[#1C1C1E] border border-[#2C2C2E] rounded-full px-3 py-2 text-white text-sm font-medium"
+        >
+          <Plus size={16} />
+          Hinzufügen
+        </button>
       </div>
     );
   }
@@ -49,7 +50,6 @@ export function HabitList({
             isCompleted={!!todayStatus[habitIdStr]}
             onToggle={() => onToggle(habit._id)}
             onEdit={() => onEdit(habit)}
-            onDelete={() => onDelete(habit)}
           />
         );
       })}

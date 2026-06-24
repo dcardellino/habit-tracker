@@ -30,9 +30,10 @@ interface AddHabitModalProps {
   open: boolean;
   onClose: () => void;
   habit?: Doc<"habits"> | null;
+  onDelete?: () => void;
 }
 
-export function AddHabitModal({ open, onClose, habit }: AddHabitModalProps) {
+export function AddHabitModal({ open, onClose, habit, onDelete }: AddHabitModalProps) {
   const [name, setName] = useState(habit?.name ?? "");
   const [emoji, setEmoji] = useState(habit?.emoji ?? "✨");
   const [category, setCategory] = useState(habit?.category ?? "");
@@ -40,6 +41,7 @@ export function AddHabitModal({ open, onClose, habit }: AddHabitModalProps) {
   const [nameError, setNameError] = useState("");
   const [saveError, setSaveError] = useState("");
   const [saving, setSaving] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   const createHabit = useMutation(api.habits.create);
   const updateHabit = useMutation(api.habits.update);
@@ -52,6 +54,7 @@ export function AddHabitModal({ open, onClose, habit }: AddHabitModalProps) {
       setColor(habit?.color ?? "#3B82F6");
       setNameError("");
       setSaveError("");
+      setConfirmDelete(false);
     }
   }, [open, habit]);
 
@@ -100,9 +103,7 @@ export function AddHabitModal({ open, onClose, habit }: AddHabitModalProps) {
         <div className="flex flex-col gap-4 mt-2">
           {/* Habit name */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-[#8E8E93]">
-              Name
-            </label>
+            <label className="text-sm font-medium text-[#8E8E93]">Name</label>
             <input
               type="text"
               placeholder="z.B. Laufen"
@@ -147,9 +148,7 @@ export function AddHabitModal({ open, onClose, habit }: AddHabitModalProps) {
 
           {/* Category */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-[#8E8E93]">
-              Kategorie
-            </label>
+            <label className="text-sm font-medium text-[#8E8E93]">Kategorie</label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
@@ -164,7 +163,6 @@ export function AddHabitModal({ open, onClose, habit }: AddHabitModalProps) {
             </select>
           </div>
 
-          {/* Save error */}
           {saveError && (
             <p className="text-xs text-red-500">{saveError}</p>
           )}
@@ -189,6 +187,41 @@ export function AddHabitModal({ open, onClose, habit }: AddHabitModalProps) {
               Speichern
             </button>
           </div>
+
+          {/* Delete section — only in edit mode */}
+          {habit && onDelete && (
+            <div className="border-t border-[#2C2C2E] pt-4">
+              {confirmDelete ? (
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-sm text-[#8E8E93]">Wirklich löschen?</p>
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setConfirmDelete(false)}
+                      className="px-3 py-1.5 rounded-lg text-sm text-[#8E8E93] hover:text-white transition-colors"
+                    >
+                      Abbrechen
+                    </button>
+                    <button
+                      type="button"
+                      onClick={onDelete}
+                      className="px-3 py-1.5 rounded-lg text-sm font-medium bg-[#EF4444] hover:bg-[#DC2626] text-white transition-colors"
+                    >
+                      Löschen
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setConfirmDelete(true)}
+                  className="text-sm text-[#EF4444] hover:text-[#DC2626] transition-colors"
+                >
+                  Habit löschen
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>
