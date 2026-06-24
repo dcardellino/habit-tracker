@@ -19,7 +19,6 @@ interface CellData {
 function buildCells(
   checkinDates: string[],
   habitCreatedAt: number,
-  color: string,
 ): CellData[] {
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
   const today = formatInTimeZone(new Date(), timezone, "yyyy-MM-dd")
@@ -70,7 +69,7 @@ export function HabitMiniGrid({
   habitCreatedAt,
   color,
 }: HabitMiniGridProps) {
-  const cells = buildCells(checkinDates, habitCreatedAt, color)
+  const cells = buildCells(checkinDates, habitCreatedAt)
 
   return (
     <div className="flex items-start gap-1">
