@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import { format, parseISO, subDays } from "date-fns"
 import { formatInTimeZone } from "date-fns-tz"
 
@@ -14,6 +15,7 @@ interface ContributionGraphProps {
   checkinDates: string[]
   habitCreatedAt: number
   userTimezone: string
+  color?: string    // per-habit accent color for completed cells
 }
 
 type CellState = "completed" | "missed" | "not-applicable"
@@ -52,10 +54,14 @@ export function buildCellData(
   })
 }
 
-const cellColorMap: Record<CellState, string> = {
-  completed: "bg-[#16A34A]",
-  missed: "bg-[#3A3A3C]",
-  "not-applicable": "bg-[#3A3A3C]/30",
+function getCellStyle(state: CellState, color: string): { className: string; style?: React.CSSProperties } {
+  if (state === "completed") {
+    return { className: "rounded-[2px] w-3 h-3", style: { backgroundColor: color } }
+  }
+  if (state === "missed") {
+    return { className: "bg-[#3A3A3C] rounded-[2px] w-3 h-3", style: undefined }
+  }
+  return { className: "bg-[#3A3A3C]/30 rounded-[2px] w-3 h-3", style: undefined }
 }
 
 function tooltipText(date: string, state: CellState): string {
@@ -69,6 +75,7 @@ export function ContributionGraph({
   checkinDates,
   habitCreatedAt,
   userTimezone,
+  color = "#16A34A",
 }: ContributionGraphProps) {
   const today = formatInTimeZone(new Date(), userTimezone, "yyyy-MM-dd")
   const cells = buildCellData(checkinDates, habitCreatedAt, userTimezone, today)
@@ -76,18 +83,19 @@ export function ContributionGraph({
   return (
     <TooltipProvider>
       <div className="grid grid-cols-[repeat(13,12px)] grid-rows-[repeat(7,12px)] gap-[2px]">
-        {cells.map((cell) => (
-          <Tooltip key={cell.date}>
-            <TooltipTrigger
-              render={
-                <div
-                  className={`w-3 h-3 rounded-[2px] ${cellColorMap[cell.state]}`}
-                />
-              }
-            />
-            <TooltipContent>{tooltipText(cell.date, cell.state)}</TooltipContent>
-          </Tooltip>
-        ))}
+        {cells.map((cell) => {
+          const { className, style } = getCellStyle(cell.state, color)
+          return (
+            <Tooltip key={cell.date}>
+              <TooltipTrigger
+                render={
+                  <div className={className} style={style} />
+                }
+              />
+              <TooltipContent>{tooltipText(cell.date, cell.state)}</TooltipContent>
+            </Tooltip>
+          )
+        })}
       </div>
     </TooltipProvider>
   )

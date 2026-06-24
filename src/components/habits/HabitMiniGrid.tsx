@@ -107,7 +107,7 @@ export function HabitMiniGrid({
                   ? color
                   : cell.state === "not-applicable"
                     ? "#3A3A3C4D"
-                    : "#3A3A3C",
+                    : "var(--color-contribution-empty)",
             }}
           />
         ))}

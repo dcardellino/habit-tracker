@@ -24,9 +24,9 @@ export default function StatsPage() {
           <Skeleton className="h-64 w-full rounded-xl bg-[#1C1C1E]" />
         </div>
       ) : stats.length === 0 ? (
-        <div className="text-center py-12 text-muted-foreground">
+        <div className="text-center py-12 text-[#8E8E93]">
           <p>No habits yet. Head to the dashboard to add your first.</p>
-          <Link href="/dashboard" className="text-primary hover:underline mt-2 inline-block">
+          <Link href="/dashboard" className="text-white hover:underline mt-2 inline-block">
             Go to dashboard
           </Link>
         </div>
