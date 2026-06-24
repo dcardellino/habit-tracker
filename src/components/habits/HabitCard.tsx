@@ -41,29 +41,12 @@ export function HabitCard({
     <div className="flex gap-3 bg-[#1C1C1E] rounded-2xl p-4 w-full">
       {/* Left section: header + grid */}
       <div className="flex-1 flex flex-col gap-3 min-w-0">
-        {/* Header: emoji + name + menu */}
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2 min-w-0">
-            <span className="text-2xl leading-none shrink-0">{habit.emoji}</span>
-            <h3 className="text-base font-semibold text-white truncate">
-              {habit.name}
-            </h3>
-          </div>
-          {/* Subtle options menu */}
-          <DropdownMenu>
-            <DropdownMenuTrigger
-              aria-label="Habit options"
-              className="flex items-center justify-center w-7 h-7 rounded-full bg-[#2C2C2E] text-[#8E8E93] hover:text-white transition-colors shrink-0"
-            >
-              <Settings size={14} />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={onEdit}>Bearbeiten</DropdownMenuItem>
-              <DropdownMenuItem variant="destructive" onClick={onDelete}>
-                Löschen
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+        {/* Header: emoji + name */}
+        <div className="flex items-center gap-2 min-w-0">
+          <span className="text-2xl leading-none shrink-0">{habit.emoji}</span>
+          <h3 className="text-base font-semibold text-white truncate">
+            {habit.name}
+          </h3>
         </div>
 
         {/* Contribution grid */}
@@ -74,16 +57,33 @@ export function HabitCard({
         />
       </div>
 
-      {/* Right section: pill check-in button */}
-      <button
-        type="button"
-        onClick={onToggle}
-        aria-label={isCompleted ? "Mark incomplete" : "Mark complete"}
-        className="w-14 rounded-2xl flex items-center justify-center shrink-0 transition-opacity duration-150"
-        style={{ backgroundColor: color, opacity: isCompleted ? 1 : 0.5 }}
-      >
-        <Check size={20} color="white" strokeWidth={2.5} />
-      </button>
+      {/* Right section: settings pill + check-in pill */}
+      <div className="flex gap-2 shrink-0">
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            aria-label="Habit options"
+            className="w-14 rounded-2xl bg-[#2C2C2E] flex items-center justify-center text-[#8E8E93] hover:text-white transition-colors"
+          >
+            <Settings size={18} />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={onEdit}>Bearbeiten</DropdownMenuItem>
+            <DropdownMenuItem variant="destructive" onClick={onDelete}>
+              Löschen
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-label={isCompleted ? "Mark incomplete" : "Mark complete"}
+          className="w-14 rounded-2xl flex items-center justify-center transition-opacity duration-150"
+          style={{ backgroundColor: color, opacity: isCompleted ? 1 : 0.5 }}
+        >
+          <Check size={20} color="white" strokeWidth={2.5} />
+        </button>
+      </div>
     </div>
   );
 }
