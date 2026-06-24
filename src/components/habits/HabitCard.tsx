@@ -8,16 +8,20 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
+import { HabitMiniGrid } from "./HabitMiniGrid";
+
+const DEFAULT_COLOR = "#3B82F6";
 
 interface HabitCardProps {
   habit: {
     _id: Id<"habits">;
     name: string;
     emoji: string;
+    createdAt: number;
+    color?: string;
   };
-  streak: number;
   isCompleted: boolean;
+  checkinDates: string[];
   onToggle: () => void;
   onEdit: () => void;
   onDelete: () => void;
@@ -25,68 +29,61 @@ interface HabitCardProps {
 
 export function HabitCard({
   habit,
-  streak,
   isCompleted,
+  checkinDates,
   onToggle,
   onEdit,
   onDelete,
 }: HabitCardProps) {
+  const color = habit.color ?? DEFAULT_COLOR;
+
   return (
-    <div className="bg-white rounded-xl p-4 border border-[#E2E8F0] w-full">
-      <div className="flex items-center gap-3">
-        {/* Left: emoji + name */}
-        <div className="flex items-center gap-3 flex-1 min-w-0">
-          <span className="text-2xl leading-none shrink-0">{habit.emoji}</span>
-          <h3 className="text-base font-semibold text-[#0F172A] truncate">
-            {habit.name}
-          </h3>
-        </div>
-
-        {/* Right: streak badge + check button + menu */}
-        <div className="flex items-center gap-2 shrink-0">
-          {/* Streak badge */}
-          <span
-            className={cn(
-              "text-sm font-mono font-medium",
-              streak > 0 ? "text-[#16A34A]" : "text-[#64748B]"
-            )}
-          >
-            🔥 {streak}
-          </span>
-
-          {/* Check button */}
-          <button
-            type="button"
-            onClick={onToggle}
-            aria-label={isCompleted ? "Mark incomplete" : "Mark complete"}
-            className={cn(
-              "w-11 h-11 rounded-full flex items-center justify-center transition-colors duration-150",
-              isCompleted ? "bg-[#16A34A]" : "bg-[#F1F5F9]"
-            )}
-          >
-            {isCompleted && <Check size={18} color="white" strokeWidth={2.5} />}
-          </button>
-
-          {/* Three-dot menu */}
+    <div className="flex gap-3 bg-[#1C1C1E] rounded-2xl p-4 w-full">
+      {/* Left section: header + grid */}
+      <div className="flex-1 flex flex-col gap-3 min-w-0">
+        {/* Header: emoji + name + menu */}
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="text-2xl leading-none shrink-0">{habit.emoji}</span>
+            <h3 className="text-base font-semibold text-white truncate">
+              {habit.name}
+            </h3>
+          </div>
+          {/* Subtle options menu */}
           <DropdownMenu>
             <DropdownMenuTrigger
               aria-label="Habit options"
-              className="flex items-center justify-center w-11 h-11 rounded-md text-[#64748B] hover:bg-[#F1F5F9] hover:text-[#0F172A] transition-colors duration-150"
+              className="flex items-center justify-center w-7 h-7 rounded-md text-[#636366] hover:text-white transition-colors shrink-0"
             >
-              <MoreHorizontal size={18} />
+              <MoreHorizontal size={16} />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={onEdit}>Edit</DropdownMenuItem>
-              <DropdownMenuItem
-                variant="destructive"
-                onClick={onDelete}
-              >
+              <DropdownMenuItem variant="destructive" onClick={onDelete}>
                 Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
+
+        {/* Contribution grid */}
+        <HabitMiniGrid
+          checkinDates={checkinDates}
+          habitCreatedAt={habit.createdAt}
+          color={color}
+        />
       </div>
+
+      {/* Right section: pill check-in button */}
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-label={isCompleted ? "Mark incomplete" : "Mark complete"}
+        className="w-14 rounded-2xl flex items-center justify-center shrink-0 transition-opacity duration-150"
+        style={{ backgroundColor: color, opacity: isCompleted ? 1 : 0.5 }}
+      >
+        <Check size={20} color="white" strokeWidth={2.5} />
+      </button>
     </div>
   );
 }
