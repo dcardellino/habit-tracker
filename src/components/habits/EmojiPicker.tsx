@@ -43,8 +43,8 @@ export function EmojiPicker({ value, onChange }: EmojiPickerProps) {
         aria-expanded={open}
         className={cn(
           "w-12 h-12 flex items-center justify-center",
-          "border border-[#E2E8F0] rounded-lg",
-          "hover:bg-[#F1F5F9] transition-colors duration-150"
+          "border border-[#2C2C2E] rounded-lg",
+          "hover:bg-[#2C2C2E] transition-colors duration-150"
         )}
       >
         <span className="text-2xl leading-none">{value || "😀"}</span>
@@ -59,7 +59,7 @@ export function EmojiPicker({ value, onChange }: EmojiPickerProps) {
               onChange(emoji.native);
               setOpen(false);
             }}
-            theme="light"
+            theme="dark"
             previewPosition="none"
             skinTonePosition="none"
           />

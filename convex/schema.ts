@@ -27,6 +27,7 @@ export default defineSchema({
     userId: v.id("users"),               // Owner
     name: v.string(),                    // "Running", "Reading", etc.
     emoji: v.string(),                   // Single emoji character: "🏃"
+    color: v.optional(v.string()),       // Hex color code, e.g. "#3B82F6"
     category: v.optional(v.string()),    // "fitness", "learning", "mindfulness", etc.
     isActive: v.boolean(),               // false = archived, hidden from dashboard
     createdAt: v.number(),               // Unix timestamp ms

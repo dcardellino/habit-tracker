@@ -4,13 +4,12 @@ import { useState, useEffect } from "react";
 import { useQuery, useMutation, useConvexAuth } from "convex/react";
 import { api } from "convex/_generated/api";
 import { format } from "date-fns";
-import { calculateStreak } from "@/lib/streaks";
 import { HabitList } from "@/components/habits/HabitList";
 import { AddHabitModal } from "@/components/habits/AddHabitModal";
 import { Doc, Id } from "convex/_generated/dataModel";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -22,56 +21,32 @@ export default function DashboardPage() {
   const today = format(new Date(), "yyyy-MM-dd");
   const { isAuthenticated } = useConvexAuth();
 
-  // Convex queries
   const habits = useQuery(api.habits.listActive);
   const todayStatus = useQuery(api.checkins.getTodayStatus, { date: today });
   const allCheckinDates = useQuery(api.checkins.getAllDatesForUser);
 
-  // Convex mutations
   const setTimezone = useMutation(api.users.setTimezone);
   const removeHabit = useMutation(api.habits.remove);
   const completeCheckin = useMutation(api.checkins.complete);
   const uncompleteCheckin = useMutation(api.checkins.uncomplete);
 
-  // TASK-020 state
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [editingHabit, setEditingHabit] = useState<Doc<"habits"> | null>(null);
-  const [confirmDeleteHabit, setConfirmDeleteHabit] =
-    useState<Doc<"habits"> | null>(null);
-
-  // TASK-021 state
   const [undoHabitId, setUndoHabitId] = useState<Id<"habits"> | null>(null);
 
-  // Capture timezone on first sign-in (kept from Phase 0)
   useEffect(() => {
     if (!isAuthenticated) return;
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    setTimezone({ timezone }).catch(() => {
-      // Timezone capture is best-effort — ignore errors
-    });
+    setTimezone({ timezone }).catch(() => {});
   }, [isAuthenticated, setTimezone]);
 
-  // Loading state: show 3 skeleton cards
   const isLoading =
     habits === undefined ||
     todayStatus === undefined ||
     allCheckinDates === undefined;
 
-  // Compute streaks per habit from full check-in history
-  const streaks: Record<string, { currentStreak: number; bestStreak: number }> =
-    {};
-  if (habits && allCheckinDates) {
-    for (const habit of habits) {
-      const habitIdStr = habit._id as string;
-      const dates = allCheckinDates[habitIdStr] ?? [];
-      streaks[habitIdStr] = calculateStreak(dates, today);
-    }
-  }
-
-  // TASK-021: toggle check-in
   const handleToggle = async (habitId: Id<"habits">) => {
     const isCompleted = todayStatus?.[habitId as string];
-
     if (!isCompleted) {
       try {
         await completeCheckin({ habitId, date: today });
@@ -93,42 +68,43 @@ export default function DashboardPage() {
     setUndoHabitId(null);
   };
 
-  // TASK-020: delete habit
-  const handleConfirmDelete = async () => {
-    if (!confirmDeleteHabit) return;
+  const handleDeleteHabit = async () => {
+    if (!editingHabit) return;
     try {
-      await removeHabit({ id: confirmDeleteHabit._id });
+      await removeHabit({ id: editingHabit._id });
     } catch {
       // error toast in TASK-030
     }
-    setConfirmDeleteHabit(null);
+    setEditingHabit(null);
   };
 
   return (
     <div>
-      {/* Header row */}
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-xl font-semibold text-[#0F172A]">Today</h1>
-        <Button onClick={() => setAddModalOpen(true)} size="sm">
-          <Plus size={16} className="mr-1" /> Add habit
-        </Button>
+      {/* Header */}
+      <div className="flex items-start justify-between mb-6">
+        <h1 className="text-[34px] font-bold text-white leading-tight">Habits</h1>
+        <button
+          onClick={() => setAddModalOpen(true)}
+          className="flex items-center gap-1.5 bg-[#1C1C1E] border border-[#2C2C2E] rounded-full px-3 py-2 text-white text-sm font-medium shrink-0"
+        >
+          <Plus size={16} />
+          Hinzufügen
+        </button>
       </div>
 
-      {/* Loading skeleton */}
       {isLoading ? (
         <div className="space-y-2">
           {[1, 2, 3].map((i) => (
-            <Skeleton key={i} className="h-16 w-full rounded-xl" />
+            <Skeleton key={i} className="h-40 w-full rounded-2xl bg-[#1C1C1E]" />
           ))}
         </div>
       ) : (
         <HabitList
           habits={habits}
           todayStatus={todayStatus ?? {}}
-          streaks={streaks}
+          allCheckinDates={allCheckinDates ?? {}}
           onToggle={handleToggle}
           onEdit={(habit) => setEditingHabit(habit)}
-          onDelete={(habit) => setConfirmDeleteHabit(habit)}
           onAddHabit={() => setAddModalOpen(true)}
         />
       )}
@@ -144,57 +120,34 @@ export default function DashboardPage() {
         open={!!editingHabit}
         onClose={() => setEditingHabit(null)}
         habit={editingHabit}
+        onDelete={handleDeleteHabit}
       />
-
-      {/* Delete confirmation dialog */}
-      <Dialog
-        open={!!confirmDeleteHabit}
-        onOpenChange={(open) => {
-          if (!open) setConfirmDeleteHabit(null);
-        }}
-      >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Delete habit?</DialogTitle>
-          </DialogHeader>
-          <p className="text-sm text-[#64748B]">
-            This will delete &ldquo;{confirmDeleteHabit?.name}&rdquo; and all
-            its history. This cannot be undone.
-          </p>
-          <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 mt-4">
-            <Button
-              variant="ghost"
-              className="w-full sm:w-auto"
-              onClick={() => setConfirmDeleteHabit(null)}
-            >
-              Cancel
-            </Button>
-            <Button variant="destructive" className="w-full sm:w-auto" onClick={handleConfirmDelete}>
-              Delete
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
 
       {/* Undo check-in dialog */}
       <Dialog
         open={!!undoHabitId}
-        onOpenChange={(open) => {
-          if (!open) setUndoHabitId(null);
-        }}
+        onOpenChange={(open) => { if (!open) setUndoHabitId(null); }}
       >
-        <DialogContent>
+        <DialogContent className="bg-[#1C1C1E] border border-[#2C2C2E]">
           <DialogHeader>
-            <DialogTitle>Undo check-in?</DialogTitle>
+            <DialogTitle className="text-white">Check-in rückgängig?</DialogTitle>
           </DialogHeader>
-          <p className="text-sm text-[#64748B]">
-            Remove today&apos;s check-in for this habit?
+          <p className="text-sm text-[#8E8E93]">
+            Den heutigen Check-in für dieses Habit entfernen?
           </p>
           <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 mt-4">
-            <Button variant="ghost" className="w-full sm:w-auto" onClick={() => setUndoHabitId(null)}>
-              Cancel
-            </Button>
-            <Button className="w-full sm:w-auto" onClick={handleConfirmUndo}>Remove check-in</Button>
+            <button
+              onClick={() => setUndoHabitId(null)}
+              className="w-full sm:w-auto px-4 py-2.5 rounded-xl text-sm text-[#8E8E93] hover:text-white transition-colors"
+            >
+              Abbrechen
+            </button>
+            <button
+              onClick={handleConfirmUndo}
+              className="w-full sm:w-auto bg-[#6366F1] hover:bg-[#4F46E5] text-white font-medium rounded-xl px-4 py-2.5 text-sm transition-colors"
+            >
+              Check-in entfernen
+            </button>
           </div>
         </DialogContent>
       </Dialog>
